@@ -185,12 +185,13 @@ function ProductModal({ product, isOpen, onClose, onAddToCart }) {
                     <div className="product-modal-info">
                         <h2 className="product-modal-title">{product.name}</h2>
                         <div className="product-modal-price">{product.price.toLocaleString()} ₽</div>
-                        <div className="product-modal-category">{product.category === 'blouses-shirts' ? 'Блузы и Рубашки' :
+                        <div className="product-modal-category">
+{product.category === 'blouses-shirts' ? 'Блузы и Рубашки' :
  product.category === 'pants-skirts' ? 'Брюки и Юбки' :
  product.category === 'jackets-blazers' ? 'Жакеты и Пиджаки' :
  product.category === 'suits' ? 'Костюмы' :
  product.category === 'shoes' ? 'Обувь' :
- product.category === 'outerwear' ? 'Верхняя одежда' : ''}</div>
+ product.category === 'outerwear' ? 'Верхняя одежда' : ''} </div>
                         <p className="product-modal-description">{product.description}</p>
                         
                         <div className="mt-4">
@@ -860,5 +861,6 @@ function App() {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(<App />);
+
 
 
