@@ -32,7 +32,12 @@ function ProductCard({ product, onAddToCart, onProductClick }) {
                 onClick={() => onProductClick(product)}
             >
                 <div className="category-badge">
-                    {categoriesData.find(cat => cat.id === product.category)?.name}
+                    {product.category === 'blouses-shirts' ? 'Блузы и Рубашки' :
+     product.category === 'pants-skirts' ? 'Брюки и Юбки' :
+     product.category === 'jackets-blazers' ? 'Жакеты и Пиджаки' :
+     product.category === 'suits' ? 'Костюмы' :
+     product.category === 'shoes' ? 'Обувь' :
+     product.category === 'outerwear' ? 'Верхняя одежда' : ''}
                 </div>
                 <div className="product-image-container">
                     <img 
@@ -855,3 +860,4 @@ function App() {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(<App />);
+
