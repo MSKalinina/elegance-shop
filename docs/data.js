@@ -1,6 +1,6 @@
 const productsData = [
             {
-                id: 2,
+                id: 1,
                 name: "Пальто",
                 price: 18900,
                 category: "outerwear",
@@ -13,7 +13,7 @@ const productsData = [
                 description: "Двубортовое пальто чёрного цвета"
             },
             {
-                id: 3,
+                id: 2,
                 name: "Приталенный жакет",
                 price: 13900,
                 category: "jackets-blazers",
@@ -25,7 +25,7 @@ const productsData = [
                 description: "Стильный жакет коричневого цвета"
             },
             {
-                id: 4,
+                id: 3,
                 name: "Блуза",
                 price: 4600,
                 category: "blouses-shirts",
@@ -37,7 +37,7 @@ const productsData = [
                 description: "Блуза с бантом."
             },
             {
-                id: 5,
+                id: 4,
                 name: "Рубашка",
                 price: 4300,
                 category: "blouses-shirts",
@@ -49,7 +49,7 @@ const productsData = [
                 description: "Хлопковая рубашка."
             },
             {
-                id: 6,
+                id: 5,
                 name: "Бордовые туфли",
                 price: 4200,
                 category: "shoes",
@@ -61,7 +61,7 @@ const productsData = [
                 description: "Классические туфли на невысоком каблуке"
             },
             {
-                id: 7,
+                id: 6,
                 name: "Пиджак",
                 price: 8500,
                 category: "jackets-blazers",
@@ -73,7 +73,7 @@ const productsData = [
                 description: "Пиджак с акцентом"
             },
             {
-                id: 8,
+                id: 7,
                 name: "Атласная блуза",
                 price: 3900,
                 category: "blouses-shirts",
@@ -85,7 +85,7 @@ const productsData = [
                 description: "Блуза с бантом из атласной ткани с деликатным блеском."
             },
             {
-                id: 9,
+                id: 8,
                 name: "Полупальто",
                 price: 10900,
                 category: "outerwear",
@@ -97,7 +97,7 @@ const productsData = [
                 description: "Укороченное пальто пудрового цвета"
             },
             {
-                id: 10,
+                id: 9,
                 name: "Черные кожаные брюки",
                 price: 16700,
                 category: "pants-skirts",
@@ -109,7 +109,7 @@ const productsData = [
                 description: "Стильные кожаные брюки классического кроя"
             },
             {
-                id: 11,
+                id: 10,
                 name: "Брюки в полоску",
                 price: 7740,
                 category: "pants-skirts",
@@ -121,7 +121,7 @@ const productsData = [
                 description: "Стильные брюки классического кроя"
             },
             {
-                id: 12,
+                id: 11,
                 name: "Бежевая юбка-карандаш",
                 price: 7600,
                 category: "pants-skirts",
@@ -133,7 +133,7 @@ const productsData = [
                 description: "Универсальная юбка-карандаш бежевого цвета"
             },
             {
-                id: 13,
+                id: 12,
                 name: "Костюм двойка серый",
                 price: 24500,
                 category: "suits",
@@ -145,7 +145,7 @@ const productsData = [
                 description: "Элегантный костюм из жакета и брюк"
             },
             {
-                id: 14,
+                id: 13,
                 name: "Черные туфли-лодочки",
                 price: 11200,
                 category: "shoes",
@@ -157,7 +157,7 @@ const productsData = [
                 description: "Классические туфли на каблуке"
             },
             {
-                id: 15,
+                id: 14,
                 name: "Плиссированная юбка",
                 price: 5000,
                 category: "pants-skirts",
@@ -169,7 +169,7 @@ const productsData = [
                 description: "Юбка плиссе миди гофре"
             },
             {
-                id: 16,
+                id: 15,
                 name: "Белая рубашка",
                 price: 6800,
                 category: "blouses-shirts",
@@ -181,7 +181,7 @@ const productsData = [
                 description: "Классическая белая рубашка из хлопка"
             },
             {
-                id: 17,
+                id: 16,
                 name: "Костюм двойка коричневый",
                 price: 9900,
                 category: "suits",
@@ -193,7 +193,7 @@ const productsData = [
                 description: "Элегантный костюм из жакета и юбки"
             },
             {
-                id: 18,
+                id: 17,
                 name: "Черные сапоги",
                 price: 22500,
                 category: "shoes",
@@ -205,7 +205,7 @@ const productsData = [
                 description: "Классические сапоги из натуральной кожи"
             },
             {
-                id: 19,
+                id: 18,
                 name: "Кожаное пальто черное",
                 price: 28900,
                 category: "outerwear",
@@ -250,4 +250,5 @@ const categoriesData = [
                 image: 'https://a.lmcdn.ru/product/M/P/MP002XW0VH31_30078717_2_v1_2x.jpg',
             }
         ];
+
 
