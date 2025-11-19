@@ -190,7 +190,7 @@ function ProductModal({ product, isOpen, onClose, onAddToCart }) {
  product.category === 'jackets-blazers' ? 'Жакеты и Пиджаки' :
  product.category === 'suits' ? 'Костюмы' :
  product.category === 'shoes' ? 'Обувь' :
- product.category === 'outerwear' ? 'Верхняя одежда' : ''</div>
+ product.category === 'outerwear' ? 'Верхняя одежда' : ''}</div>
                         <p className="product-modal-description">{product.description}</p>
                         
                         <div className="mt-4">
@@ -860,4 +860,5 @@ function App() {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(<App />);
+
 
