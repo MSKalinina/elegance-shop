@@ -219,40 +219,35 @@ const productsData = [
 
         ];
 const categoriesData = [
-    {
-        id: 1,
-        name: "Верхняя одежда",
-        slug: "outerwear",
-        image: "https://via.placeholder.com/300x200/667eea/ffffff?text=Пальто"
-    },
-    {
-        id: 2,
-        name: "Жакеты и пиджаки", 
-        slug: "jackets-blazers",
-        image: "https://via.placeholder.com/300x200/764ba2/ffffff?text=Жакеты"
-    },
-    {
-        id: 3,
-        name: "Блузы и рубашки",
-        slug: "blouses-shirts", 
-        image: "https://via.placeholder.com/300x200/f093fb/ffffff?text=Блузы"
-    },
-    {
-        id: 4,
-        name: "Брюки и юбки",
-        slug: "pants-skirts",
-        image: "https://via.placeholder.com/300x200/4facfe/ffffff?text=Юбки"
-    },
-    {
-        id: 5, 
-        name: "Обувь",
-        slug: "shoes",
-        image: "https://via.placeholder.com/300x200/43e97b/ffffff?text=Обувь"
-    },
-    {
-        id: 6,
-        name: "Костюмы",
-        slug: "suits", 
-        image: "https://via.placeholder.com/300x200/ff9a9e/ffffff?text=Костюмы"
-    }
-];
+            {
+                id: 'blouses-shirts',
+                name: 'Блузы и Рубашки',
+                image: 'https://a.lmcdn.ru/product/M/P/MP002XW0ZIMS_24790123_1_v3.jpg',
+            },
+            {
+                id: 'pants-skirts',
+                name: 'Брюки и Юбки',
+                image: 'https://a.lmcdn.ru/img600x866/M/P/MP002XW1EZG4_21131543_1_v3_2x.jpg',
+            },
+            {
+                id: 'jackets-blazers',
+                name: 'Жакеты и Пиджаки',
+                image: 'https://a.lmcdn.ru/product/M/P/MP002XW0VMIJ_30352674_1_v2_2x.jpg',
+            },
+            {
+                id: 'suits',
+                name: 'Костюмы',
+                image: 'https://a.lmcdn.ru/product/M/P/MP002XW1BVLZ_27790402_1_v3.jpg',
+            },
+            {
+                id: 'shoes',
+                name: 'Обувь',
+                image: 'https://respect-shoes.ru/upload/medialibrary/a63/a6345979fe5d0128d4403a132a7cba06.jpg',
+            },
+            {
+                id: 'outerwear',
+                name: 'Верхняя одежда',
+                image: 'https://a.lmcdn.ru/product/M/P/MP002XW0VH31_30078717_2_v1_2x.jpg',
+            }
+        ];
+
