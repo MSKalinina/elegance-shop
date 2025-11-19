@@ -216,4 +216,43 @@ const productsData = [
                 ],
                 description: "Стильное кожаное пальто прямого кроя"
             }
+
         ];
+const categoriesData = [
+    {
+        id: 1,
+        name: "Верхняя одежда",
+        slug: "outerwear",
+        image: "https://via.placeholder.com/300x200/667eea/ffffff?text=Пальто"
+    },
+    {
+        id: 2,
+        name: "Жакеты и пиджаки", 
+        slug: "jackets-blazers",
+        image: "https://via.placeholder.com/300x200/764ba2/ffffff?text=Жакеты"
+    },
+    {
+        id: 3,
+        name: "Блузы и рубашки",
+        slug: "blouses-shirts", 
+        image: "https://via.placeholder.com/300x200/f093fb/ffffff?text=Блузы"
+    },
+    {
+        id: 4,
+        name: "Брюки и юбки",
+        slug: "pants-skirts",
+        image: "https://via.placeholder.com/300x200/4facfe/ffffff?text=Юбки"
+    },
+    {
+        id: 5, 
+        name: "Обувь",
+        slug: "shoes",
+        image: "https://via.placeholder.com/300x200/43e97b/ffffff?text=Обувь"
+    },
+    {
+        id: 6,
+        name: "Костюмы",
+        slug: "suits", 
+        image: "https://via.placeholder.com/300x200/ff9a9e/ffffff?text=Костюмы"
+    }
+];
