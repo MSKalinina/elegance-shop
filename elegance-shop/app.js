@@ -380,12 +380,12 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
                             ))}
                             <div className="mt-4 pt-3 border-top">
                                 <h5>Итого: {totalPrice.toLocaleString()} ₽</h5>
-                                <button 
-                                    className="btn btn-primary w-100 mt-3"
-                                    onClick={handleCheckout}
-                                >
-                                    Оформить заказ
-                                </button>
+                               <button 
+    className="btn btn-primary w-100 mt-3"
+    onClick={handleCheckout}  
+>
+    Оформить заказ
+</button>
                             </div>
                         </>
                     )}
@@ -1078,4 +1078,5 @@ function App() {
 // Рендеринг приложения
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
+
 
