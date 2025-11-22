@@ -920,8 +920,12 @@ function App() {
     };
 
     const removeFromCart = (productId) => {
-        setCart(prevCart => prevCart.filter(item => item.id !== productId));
-    };
+    if (productId === 'all') {
+        setCart([]); // Очищаем всю корзину
+        return;
+    }
+    setCart(prevCart => prevCart.filter(item => item.id !== productId));
+};
 
     const updateQuantity = (productId, newQuantity) => {
         if (newQuantity === 0) {
@@ -1074,3 +1078,4 @@ function App() {
 // Рендеринг приложения
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
+
