@@ -380,9 +380,18 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
                             ))}
                             <div className="mt-4 pt-3 border-top">
                                 <h5>Итого: {totalPrice.toLocaleString()} ₽</h5>
-                               <button 
+                              <button 
     className="btn btn-primary w-100 mt-3"
-    onClick={handleCheckout}  
+    onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Кнопка нажата!');
+        handleCheckout();
+    }}
+    style={{
+        position: 'relative',
+        zIndex: 9999
+    }}
 >
     Оформить заказ
 </button>
@@ -1078,5 +1087,6 @@ function App() {
 // Рендеринг приложения
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
+
 
 
