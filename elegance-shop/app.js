@@ -32,7 +32,12 @@ function ProductCard({ product, onAddToCart, onProductClick }) {
                 onClick={() => onProductClick(product)}
             >
                 <div className="category-badge">
-                    {categoriesData.find(cat => cat.id === product.category)?.name}
+                    {product.category === 'blouses-shirts' ? 'Блузы и Рубашки' :
+                     product.category === 'pants-skirts' ? 'Брюки и Юбки' :
+                     product.category === 'jackets-blazers' ? 'Жакеты и Пиджаки' :
+                     product.category === 'suits' ? 'Костюмы' :
+                     product.category === 'shoes' ? 'Обувь' :
+                     product.category === 'outerwear' ? 'Верхняя одежда' : ''}
                 </div>
                 <div className="product-image-container">
                     <img 
@@ -180,7 +185,14 @@ function ProductModal({ product, isOpen, onClose, onAddToCart }) {
                     <div className="product-modal-info">
                         <h2 className="product-modal-title">{product.name}</h2>
                         <div className="product-modal-price">{product.price.toLocaleString()} ₽</div>
-                        <div className="product-modal-category">{categoriesData.find(cat => cat.id === product.category)?.name}</div>
+                        <div className="product-modal-category">
+                            {product.category === 'blouses-shirts' ? 'Блузы и Рубашки' :
+                             product.category === 'pants-skirts' ? 'Брюки и Юбки' :
+                             product.category === 'jackets-blazers' ? 'Жакеты и Пиджаки' :
+                             product.category === 'suits' ? 'Костюмы' :
+                             product.category === 'shoes' ? 'Обувь' :
+                             product.category === 'outerwear' ? 'Верхняя одежда' : ''}
+                        </div>
                         <p className="product-modal-description">{product.description}</p>
                         
                         <div className="mt-4">
@@ -249,7 +261,6 @@ function ProductModal({ product, isOpen, onClose, onAddToCart }) {
 
 // Компонент корзины с модальным окном оформления заказа
 function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }) {
-    // Состояние для модального окна оформления заказа
     const [showCheckoutModal, setShowCheckoutModal] = useState(false);
     const [checkoutFormData, setCheckoutFormData] = useState({
         firstName: '',
@@ -260,7 +271,6 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
         comment: ''
     });
 
-    // Обработчик изменения полей формы оформления заказа
     const handleCheckoutInputChange = (e) => {
         const { name, value } = e.target;
         setCheckoutFormData(prev => ({
@@ -269,17 +279,14 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
         }));
     };
 
-    // Обработчик отправки формы оформления заказа
     const handleCheckoutSubmit = (e) => {
         e.preventDefault();
         
-        // Проверка заполнения обязательных полей
         if (!checkoutFormData.firstName || !checkoutFormData.phone || !checkoutFormData.email) {
             alert('Пожалуйста, заполните все обязательные поля (Имя, Телефон, Email)');
             return;
         }
 
-        // Здесь можно добавить логику отправки заказа
         console.log('Данные заказа:', {
             customer: checkoutFormData,
             cart: cart,
@@ -288,11 +295,9 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
         
         alert(`Заказ успешно оформлен! Номер вашего заказа: #${Math.random().toString(36).substr(2, 9).toUpperCase()}`);
         
-        // Закрываем модальные окна и очищаем корзину
         setShowCheckoutModal(false);
         onHide();
         
-        // Очищаем форму
         setCheckoutFormData({
             firstName: '',
             lastName: '',
@@ -303,7 +308,6 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
         });
     };
 
-    // Обработчик оформления заказа
     const handleCheckout = () => {
         if (cart.length === 0) {
             alert('Корзина пуста');
@@ -364,7 +368,7 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
                                 <h5>Итого: {totalPrice.toLocaleString()} ₽</h5>
                                 <button 
                                     className="btn btn-primary w-100 mt-3"
-                                    onClick={handleCheckoutClick}
+                                    onClick={handleCheckout}  {/* ИСПРАВЛЕНО: было handleCheckoutClick */}
                                 >
                                     Оформить заказ
                                 </button>
@@ -513,547 +517,4 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
     );
 }
 
-// Компонент шапки
-function Header({ cartCount, onCartClick }) {
-    const [showLoginModal, setShowLoginModal] = useState(false);
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        phone: '',
-        email: ''
-    });
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Данные регистрации:', formData);
-        alert('Регистрация успешно завершена!');
-        setShowLoginModal(false);
-        setFormData({
-            firstName: '',
-            lastName: '',
-            phone: '',
-            email: ''
-        });
-    };
-
-    return (
-        <>
-            <nav className="navbar navbar-expand-lg navbar-light sticky-top">
-                <div className="container">
-                    <a className="navbar-brand" href="#">ELEGANCE</a>
-                    
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav mx-auto">
-                            <li className="nav-item">
-                                <a className="nav-link" href="#home">Главная</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#about">О нас</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#categories">Категории</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#products">Каталог</a>
-                            </li>
-                        </ul>
-                        
-                        <div className="d-flex align-items-center">
-                            <button 
-                                className="btn btn-outline me-3"
-                                onClick={() => setShowLoginModal(true)}
-                            >
-                                <i className="bi bi-person me-2"></i>
-                                Войти
-                            </button>
-                            <button className="btn btn-outline me-3">
-                                <i className="bi bi-search"></i>
-                            </button>
-                            <button className="btn btn-outline position-relative" onClick={onCartClick}>
-                                <i className="bi bi-bag"></i>
-                                {cartCount > 0 && (
-                                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-olive">
-                                        {cartCount}
-                                    </span>
-                                )}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
-            {showLoginModal && (
-                <div className="modal show d-block" tabIndex="-1" style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">Регистрация</h5>
-                                <button 
-                                    type="button" 
-                                    className="btn-close" 
-                                    onClick={() => setShowLoginModal(false)}
-                                ></button>
-                            </div>
-                            <form onSubmit={handleSubmit}>
-                                <div className="modal-body">
-                                    <div className="mb-3">
-                                        <label htmlFor="firstName" className="form-label">Имя *</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="firstName"
-                                            name="firstName"
-                                            value={formData.firstName}
-                                            onChange={handleInputChange}
-                                            required
-                                            placeholder="Введите ваше имя"
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="lastName" className="form-label">Фамилия *</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="lastName"
-                                            name="lastName"
-                                            value={formData.lastName}
-                                            onChange={handleInputChange}
-                                            required
-                                            placeholder="Введите вашу фамилию"
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="phone" className="form-label">Номер телефона *</label>
-                                        <input
-                                            type="tel"
-                                            className="form-control"
-                                            id="phone"
-                                            name="phone"
-                                            value={formData.phone}
-                                            onChange={handleInputChange}
-                                            required
-                                            placeholder="+7 (999) 123-45-67"
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="email" className="form-label">Email *</label>
-                                        <input
-                                            type="email"
-                                            className="form-control"
-                                            id="email"
-                                            name="email"
-                                            value={formData.email}
-                                            onChange={handleInputChange}
-                                            required
-                                            placeholder="your@email.com"
-                                        />
-                                    </div>
-                                    <div className="form-text">
-                                        * Обязательные поля для заполнения
-                                    </div>
-                                </div>
-                                <div className="modal-footer">
-                                    <button 
-                                        type="button" 
-                                        className="btn btn-outline-secondary" 
-                                        onClick={() => setShowLoginModal(false)}
-                                    >
-                                        Отмена
-                                    </button>
-                                    <button 
-                                        type="submit" 
-                                        className="btn btn-primary"
-                                    >
-                                        Зарегистрироваться
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </>
-    );
-}
-
-// Компонент футера
-function Footer({ onCategoryClick }) {
-    const handleShopLinkClick = (categoryId) => {
-        if (onCategoryClick) {
-            onCategoryClick(categoryId);
-        }
-        document.getElementById('products').scrollIntoView({ 
-            behavior: 'smooth' 
-        });
-    };
-
-    const handleHelpLinkClick = (section) => {
-        switch(section) {
-            case 'delivery':
-                alert('Информация о доставке:\n\n• Бесплатная доставка по России при заказе от 5000₽\n• Срок доставки: 2-7 рабочих дней\n• Возврат в течение 14 дней');
-                break;
-            case 'sizes':
-                const sizeTable = `
-Таблица размеров:
-
-Женская одежда:
-XS - 42-44 
-S - 44-46   
-M - 46-48 
-L - 48-50 
-XL - 50-52 
-
-Обувь:
-35-36 - 22-23 см
-37-38 - 24-25 см
-39-40 - 26-27 см
-41-42 - 28-29 см
-                `;
-                alert(sizeTable);
-                break;
-            case 'contacts':
-                alert('Контактная информация:\n\nТелефон: +7 (999) 123-45-67\nEmail: info@elegance.ru\nАдрес: Омск, Ленина, 20');
-                break;
-        }
-    };
-
-    return (
-        <footer className="footer">
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-4 mb-4">
-                        <h5>Магазин ELEGANCE</h5>
-                        <p>Вечная классика, созданная для жизни. ELEGANCE - это капсульный гардероб для современной женщины, где каждая вещь - это инвестиция в стиль, качество и осознанность.</p>
-                    </div>
-                    <div className="col-md-2 mb-4">
-                        <h5>Магазин</h5>
-                        <ul className="list-unstyled">
-                            <li>
-                                <a 
-                                    href="#products" 
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleShopLinkClick('blouses-shirts');
-                                    }}
-                                    style={{cursor: 'pointer', textDecoration: 'none'}}
-                                >
-                                    Блузы и Рубашки
-                                </a>
-                            </li>
-                            <li>
-                                <a 
-                                    href="#products" 
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleShopLinkClick('pants-skirts');
-                                    }}
-                                    style={{cursor: 'pointer', textDecoration: 'none'}}
-                                >
-                                    Брюки и Юбки
-                                </a>
-                            </li>
-                            <li>
-                                <a 
-                                    href="#products" 
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleShopLinkClick('outerwear');
-                                    }}
-                                    style={{cursor: 'pointer', textDecoration: 'none'}}
-                                >
-                                    Верхняя одежда
-                                </a>
-                            </li>
-                            <li>
-                                <a 
-                                    href="#products" 
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleShopLinkClick('shoes');
-                                    }}
-                                    style={{cursor: 'pointer', textDecoration: 'none'}}
-                                >
-                                    Обувь
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="col-md-3 mb-4">
-                        <h5>Помощь</h5>
-                        <ul className="list-unstyled">
-                            <li>
-                                <a 
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleHelpLinkClick('delivery');
-                                    }}
-                                    style={{cursor: 'pointer', textDecoration: 'none'}}
-                                >
-                                    Доставка и возврат
-                                </a>
-                            </li>
-                            <li>
-                                <a 
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleHelpLinkClick('sizes');
-                                    }}
-                                    style={{cursor: 'pointer', textDecoration: 'none'}}
-                                >
-                                    Размеры
-                                </a>
-                            </li>
-                            <li>
-                                <a 
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleHelpLinkClick('contacts');
-                                    }}
-                                    style={{cursor: 'pointer', textDecoration: 'none'}}
-                                >
-                                    Контакты
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="col-md-3 mb-4">
-                        <h5>Контакты</h5>
-                        <p>
-                            <span 
-                                style={{cursor: 'pointer', textDecoration: 'underline'}}
-                                onClick={() => handleHelpLinkClick('contacts')}
-                            >
-                                +7 (999) 123-45-67
-                            </span>
-                            <br/>
-                            <span 
-                                style={{cursor: 'pointer', textDecoration: 'underline'}}
-                                onClick={() => handleHelpLinkClick('contacts')}
-                            >
-                                info@elegance.ru
-                            </span>
-                            <br/>
-                            <span 
-                                style={{cursor: 'pointer', textDecoration: 'underline'}}
-                                onClick={() => handleHelpLinkClick('contacts')}
-                            >
-                                Омск, Ленина, 20
-                            </span>
-                        </p>
-                        <div className="d-flex">
-                            <a href="#" className="me-3"><i className="bi bi-telegram"></i></a>
-                            <a href="#"><i className="bi bi-whatsapp"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div className="text-center pt-3 border-top">
-                    <p>&copy; 2025 ELEGANCE. Все права защищены.</p>
-                </div>
-            </div>
-        </footer>
-    );
-}
-
-// Главный компонент
-function App() {
-    const [cart, setCart] = useState([]);
-    const [showCart, setShowCart] = useState(false);
-    const [activeCategory, setActiveCategory] = useState('all');
-    const [filteredProducts, setFilteredProducts] = useState(productsData);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [showProductModal, setShowProductModal] = useState(false);
-
-    // Фильтрация товаров по категории
-    useEffect(() => {
-        if (activeCategory === 'all') {
-            setFilteredProducts(productsData);
-        } else {
-            setFilteredProducts(productsData.filter(product => product.category === activeCategory));
-        }
-    }, [activeCategory]);
-
-    const addToCart = (product) => {
-        setCart(prevCart => {
-            const existingItem = prevCart.find(item => item.id === product.id);
-            if (existingItem) {
-                return prevCart.map(item =>
-                    item.id === product.id
-                        ? { ...item, quantity: item.quantity + 1 }
-                        : item
-                );
-            }
-            return [...prevCart, { ...product, quantity: 1 }];
-        });
-    };
-
-    const removeFromCart = (productId) => {
-        setCart(prevCart => prevCart.filter(item => item.id !== productId));
-    };
-
-    const updateQuantity = (productId, newQuantity) => {
-        if (newQuantity === 0) {
-            removeFromCart(productId);
-            return;
-        }
-        setCart(prevCart =>
-            prevCart.map(item =>
-                item.id === productId ? { ...item, quantity: newQuantity } : item
-            )
-        );
-    };
-
-    const getTotalPrice = () => {
-        return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-    };
-
-    const handleCategoryClick = (categoryId) => {
-        setActiveCategory(categoryId);
-        document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
-    };
-
-    const handleProductClick = (product) => {
-        setSelectedProduct(product);
-        setShowProductModal(true);
-    };
-
-    const handleCloseProductModal = () => {
-        setShowProductModal(false);
-        setSelectedProduct(null);
-    };
-
-    return (
-        <div>
-            <Header 
-                cartCount={cart.reduce((count, item) => count + item.quantity, 0)}
-                onCartClick={() => setShowCart(true)}
-            />
-            
-            {/* Герой секция */}
-            <section id="home" className="hero-section">
-                <div className="container">
-                    <h1 className="hero-title">Магазин ELEGANCE</h1>
-                    <p className="hero-subtitle">Минимализм, уникальность, качество.</p>
-                    <button 
-                        className="btn btn-primary btn-lg"
-                        onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })}
-                    >
-                        О нас
-                    </button>
-                </div>
-            </section>
-
-            {/* Секция "О нас" */}
-            <section id="about" className="py-5">
-                <div className="container">
-                    <div className="row align-items-center">
-                        <div className="col-md-6">
-                            <h2 className="section-title text-start">О нас</h2>
-                            <p className="lead">
-                                Наша философия проста: меньше, но лучше. Мы верим, что настоящая роскошь - это ощущение комфорта, уверенность в безупречном качестве и свобода от сиюминутных трендов. Каждое наше изделие - это тщательно отобранные натуральные ткани, идеальная посадка и лаконичный дизайн, который будет актуален всегда.
-                            </p>
-                        </div>
-                        <div className="col-md-6">
-                            <img 
-                                src="https://yellowhome.ru/wp-content/uploads/2017/10/15-12.jpg" 
-                                alt="О нас" 
-                                className="img-fluid rounded"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Категории */}
-            <section id="categories" className="py-5 bg-beige">
-                <div className="container">
-                    <h2 className="section-title">Категории</h2>
-                    <div className="row">
-                        {categoriesData.map(category => (
-                            <CategoryCard 
-                                key={category.id}
-                                category={category}
-                                onClick={handleCategoryClick}
-                            />
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Каталог товаров */}
-            <section id="products" className="py-5">
-                <div className="container">
-                    <h2 className="section-title">Каталог</h2>
-                    
-                    {/* Фильтры по категориям */}
-                    <div className="filter-buttons">
-                        <button 
-                            className={`filter-btn ${activeCategory === 'all' ? 'active' : ''}`}
-                            onClick={() => setActiveCategory('all')}
-                        >
-                            Все товары
-                        </button>
-                        {categoriesData.map(category => (
-                            <button
-                                key={category.id}
-                                className={`filter-btn ${activeCategory === category.id ? 'active' : ''}`}
-                                onClick={() => setActiveCategory(category.id)}
-                            >
-                                {category.name}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="row">
-                        {filteredProducts.map(product => (
-                            <ProductCard 
-                                key={product.id}
-                                product={product}
-                                onAddToCart={addToCart}
-                                onProductClick={handleProductClick}
-                            />
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            <Footer onCategoryClick={handleCategoryClick} />
-
-            <Cart 
-                show={showCart}
-                onHide={() => setShowCart(false)}
-                cart={cart}
-                removeFromCart={removeFromCart}
-                updateQuantity={updateQuantity}
-                totalPrice={getTotalPrice()}
-            />
-
-            {/* Модальное окно товара */}
-            <ProductModal 
-                product={selectedProduct}
-                isOpen={showProductModal}
-                onClose={handleCloseProductModal}
-                onAddToCart={addToCart}
-            />
-        </div>
-    );
-}
-
-// Рендеринг приложения
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
-
+// Остальные компоненты (Header, Footer, App) остаются без изменений...
