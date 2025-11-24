@@ -261,60 +261,211 @@ function ProductModal({ product, isOpen, onClose, onAddToCart }) {
 
 // Компонент корзины
 function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }) {
+    const [showOrderModal, setShowOrderModal] = useState(false);
+    const [orderData, setOrderData] = useState({
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
+        comment: ''
+    });
+
     if (!show) return null;
 
+    const handleOrderSubmit = (e) => {
+        e.preventDefault();
+        // Здесь можно добавить логику отправки заказа
+        console.log('Данные заказа:', orderData);
+        console.log('Товары:', cart);
+        console.log('Общая сумма:', totalPrice);
+        
+        // Закрываем модальное окно и корзину
+        setShowOrderModal(false);
+        onHide();
+        
+        // Очищаем форму
+        setOrderData({
+            name: '',
+            phone: '',
+            email: '',
+            address: '',
+            comment: ''
+        });
+        
+        // Можно добавить уведомление об успешном оформлении
+        alert('Заказ успешно оформлен!');
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setOrderData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
     return (
-        <div className="offcanvas offcanvas-end show" tabIndex="-1" style={{visibility: 'visible'}}>
-            <div className="offcanvas-header">
-                <h5 className="offcanvas-title">Корзина</h5>
-                <button type="button" className="btn-close" onClick={onHide}></button>
-            </div>
-            <div className="offcanvas-body">
-                {cart.length === 0 ? (
-                    <p>Ваша корзина пуста</p>
-                ) : (
-                    <>
-                        {cart.map(item => (
-                            <div key={item.id} className="cart-item">
-                                <div className="d-flex justify-content-between">
-                                    <div>
-                                        <h6>{item.name}</h6>
-                                        <p>{item.price.toLocaleString()} ₽ × {item.quantity}</p>
-                                    </div>
-                                    <div className="d-flex align-items-center">
-                                        <button 
-                                            className="btn btn-sm btn-outline-secondary me-2"
-                                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                        >
-                                            -
-                                        </button>
-                                        <span>{item.quantity}</span>
-                                        <button 
-                                            className="btn btn-sm btn-outline-secondary ms-2"
-                                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                        >
-                                            +
-                                        </button>
-                                        <button 
-                                            className="btn btn-sm btn-outline-danger ms-3"
-                                            onClick={() => removeFromCart(item.id)}
-                                        >
-                                            <i className="bi bi-trash"></i>
-                                        </button>
+        <>
+            <div className="offcanvas offcanvas-end show" tabIndex="-1" style={{visibility: 'visible'}}>
+                <div className="offcanvas-header">
+                    <h5 className="offcanvas-title">Корзина</h5>
+                    <button type="button" className="btn-close" onClick={onHide}></button>
+                </div>
+                <div className="offcanvas-body">
+                    {cart.length === 0 ? (
+                        <p>Ваша корзина пуста</p>
+                    ) : (
+                        <>
+                            {cart.map(item => (
+                                <div key={item.id} className="cart-item mb-3 p-2 border-bottom">
+                                    <div className="d-flex justify-content-between">
+                                        <div>
+                                            <h6>{item.name}</h6>
+                                            <p>{item.price.toLocaleString()} ₽ × {item.quantity}</p>
+                                        </div>
+                                        <div className="d-flex align-items-center">
+                                            <button 
+                                                className="btn btn-sm btn-outline-secondary me-2"
+                                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                            >
+                                                -
+                                            </button>
+                                            <span>{item.quantity}</span>
+                                            <button 
+                                                className="btn btn-sm btn-outline-secondary ms-2"
+                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                            >
+                                                +
+                                            </button>
+                                            <button 
+                                                className="btn btn-sm btn-outline-danger ms-3"
+                                                onClick={() => removeFromCart(item.id)}
+                                            >
+                                                <i className="bi bi-trash"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
+                            ))}
+                            <div className="mt-4 pt-3 border-top">
+                                <h5>Итого: {totalPrice.toLocaleString()} ₽</h5>
+                                <button 
+                                    className="btn btn-primary w-100 mt-3"
+                                    onClick={() => setShowOrderModal(true)}
+                                >
+                                    Оформить заказ
+                                </button>
                             </div>
-                        ))}
-                        <div className="mt-4 pt-3 border-top">
-                            <h5>Итого: {totalPrice.toLocaleString()} ₽</h5>
-                            <button className="btn btn-primary w-100 mt-3">
-                                Оформить заказ
-                            </button>
-                        </div>
-                    </>
-                )}
+                        </>
+                    )}
+                </div>
             </div>
-        </div>
+
+            {/* Модальное окно оформления заказа */}
+            {showOrderModal && (
+                <div className="modal show d-block" tabIndex="-1" style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Оформление заказа</h5>
+                                <button 
+                                    type="button" 
+                                    className="btn-close" 
+                                    onClick={() => setShowOrderModal(false)}
+                                ></button>
+                            </div>
+                            <form onSubmit={handleOrderSubmit}>
+                                <div className="modal-body">
+                                    <div className="mb-3">
+                                        <label htmlFor="name" className="form-label">ФИО *</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="name"
+                                            name="name"
+                                            value={orderData.name}
+                                            onChange={handleInputChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="phone" className="form-label">Телефон *</label>
+                                        <input
+                                            type="tel"
+                                            className="form-control"
+                                            id="phone"
+                                            name="phone"
+                                            value={orderData.phone}
+                                            onChange={handleInputChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="email" className="form-label">Email</label>
+                                        <input
+                                            type="email"
+                                            className="form-control"
+                                            id="email"
+                                            name="email"
+                                            value={orderData.email}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="address" className="form-label">Адрес доставки *</label>
+                                        <textarea
+                                            className="form-control"
+                                            id="address"
+                                            name="address"
+                                            rows="3"
+                                            value={orderData.address}
+                                            onChange={handleInputChange}
+                                            required
+                                        ></textarea>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="comment" className="form-label">Комментарий к заказу</label>
+                                        <textarea
+                                            className="form-control"
+                                            id="comment"
+                                            name="comment"
+                                            rows="3"
+                                            value={orderData.comment}
+                                            onChange={handleInputChange}
+                                        ></textarea>
+                                    </div>
+                                    <div className="border-top pt-3">
+                                        <h6>Состав заказа:</h6>
+                                        {cart.map(item => (
+                                            <div key={item.id} className="d-flex justify-content-between">
+                                                <span>{item.name} × {item.quantity}</span>
+                                                <span>{(item.price * item.quantity).toLocaleString()} ₽</span>
+                                            </div>
+                                        ))}
+                                        <div className="d-flex justify-content-between fw-bold mt-2">
+                                            <span>Итого:</span>
+                                            <span>{totalPrice.toLocaleString()} ₽</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button 
+                                        type="button" 
+                                        className="btn btn-secondary" 
+                                        onClick={() => setShowOrderModal(false)}
+                                    >
+                                        Отмена
+                                    </button>
+                                    <button type="submit" className="btn btn-primary">
+                                        Подтвердить заказ
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     );
 }
 
@@ -862,6 +1013,7 @@ function App() {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(<App />);
+
 
 
 
