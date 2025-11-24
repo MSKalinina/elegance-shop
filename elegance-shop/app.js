@@ -273,20 +273,19 @@ function ProductModal({ product, isOpen, onClose, onAddToCart }) {
     );
 }
 
-// Компонент корзины с модальным окном оформления заказа
+// Компонент корзины
 function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }) {
     const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-    const [checkoutFormData, setCheckoutFormData] = useState({
+    const [formData, setFormData] = useState({
         firstName: '',
-        lastName: '',
         phone: '',
         email: '',
-        address: '',
-        comment: ''
+        address: ''
     });
 
-    const handleCheckoutClick = () => {
-        console.log('Кнопка "Оформить заказ" нажата');
+    // Обработчик оформления заказа
+    const handleCheckout = () => {
+        console.log('🛒 Оформление заказа, товаров:', cart.length);
         if (cart.length === 0) {
             alert('Корзина пуста');
             return;
@@ -294,183 +293,194 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
         setShowCheckoutModal(true);
     };
 
+    // Обработчик отправки формы
     const handleSubmitOrder = (e) => {
         e.preventDefault();
-        console.log('Форма отправлена');
+        console.log('📦 Отправка заказа:', formData);
         
-        if (!checkoutFormData.firstName || !checkoutFormData.phone) {
-            alert('Заполните обязательные поля: Имя и Телефон');
+        // Простая валидация
+        if (!formData.firstName.trim() || !formData.phone.trim()) {
+            alert('Пожалуйста, заполните обязательные поля');
             return;
         }
 
-        alert(`Заказ успешно оформлен! Номер заказа: #${Math.random().toString(36).substr(2, 9).toUpperCase()}`);
+        // Симуляция успешного заказа
+        alert(`Заказ оформлен! Номер: #${Math.random().toString(36).substr(2, 8).toUpperCase()}`);
+        
+        // Сброс состояния
         setShowCheckoutModal(false);
         onHide();
-        setCheckoutFormData({
+        setFormData({
             firstName: '',
-            lastName: '',
             phone: '',
             email: '',
-            address: '',
-            comment: ''
+            address: ''
         });
     };
 
+    // Обработчик изменений в форме
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setCheckoutFormData(prev => ({
+        setFormData(prev => ({
             ...prev,
             [name]: value
         }));
     };
 
+    // Закрытие модального окна
+    const handleCloseModal = () => {
+        setShowCheckoutModal(false);
+    };
+
+    // Если корзина скрыта - не рендерим ничего
     if (!show) return null;
 
     return (
         <>
-            {/* Боковая панель корзины */}
-            <div className="cart-sidebar">
-                <div className="cart-header">
-                    <h4>Корзина</h4>
-                    <button className="cart-close-btn" onClick={onHide}>×</button>
-                </div>
+            {/* Оверлей корзины */}
+            <div className="cart-overlay">
+                <div className="cart-sidebar">
+                    {/* Заголовок корзины */}
+                    <div className="cart-header">
+                        <h3>Корзина</h3>
+                        <button 
+                            type="button" 
+                            className="cart-close-btn"
+                            onClick={onHide}
+                        >
+                            ×
+                        </button>
+                    </div>
 
-                {cart.length === 0 ? (
-                    <p>Ваша корзина пуста</p>
-                ) : (
-                    <>
-                        {cart.map(item => (
-                            <div key={item.id} className="cart-item">
-                                <div className="cart-item-content">
+                    {/* Тело корзины */}
+                    <div className="cart-body">
+                        {cart.length === 0 ? (
+                            <p>Ваша корзина пуста</p>
+                        ) : (
+                            cart.map(item => (
+                                <div key={item.id} className="cart-item">
                                     <div className="cart-item-info">
                                         <h6>{item.name}</h6>
-                                        <p className="cart-item-price">{item.price.toLocaleString()} ₽ × {item.quantity}</p>
+                                        <p>{item.price.toLocaleString()} ₽ × {item.quantity}</p>
                                         {item.selectedSize && (
-                                            <small className="text-muted">Размер: {item.selectedSize}</small>
+                                            <small>Размер: {item.selectedSize}</small>
                                         )}
                                     </div>
                                     <div className="cart-item-actions">
                                         <button 
+                                            type="button"
                                             className="quantity-btn"
                                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                        >-</button>
+                                        >
+                                            -
+                                        </button>
                                         <span>{item.quantity}</span>
                                         <button 
+                                            type="button"
                                             className="quantity-btn"
                                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                        >+</button>
+                                        >
+                                            +
+                                        </button>
                                         <button 
+                                            type="button"
                                             className="remove-btn"
                                             onClick={() => removeFromCart(item.id)}
-                                        >×</button>
+                                        >
+                                            ×
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                        
+                            ))
+                        )}
+                    </div>
+
+                    {/* Футер корзины */}
+                    <div className="cart-footer">
                         <div className="cart-total">
                             <h4>Итого: {totalPrice.toLocaleString()} ₽</h4>
                             <button 
+                                type="button"
                                 className="checkout-btn"
-                                onClick={handleCheckoutClick}
+                                onClick={handleCheckout}
+                                disabled={cart.length === 0}
                             >
                                 Оформить заказ
                             </button>
                         </div>
-                    </>
-                )}
+                    </div>
+                </div>
             </div>
 
             {/* Модальное окно оформления заказа */}
             {showCheckoutModal && (
-                <div className="checkout-modal-overlay">
+                <div className="checkout-overlay">
                     <div className="checkout-modal">
-                        <div className="checkout-modal-header">
-                            <h4>Оформление заказа</h4>
+                        <div className="modal-header">
+                            <h3>Оформление заказа</h3>
                             <button 
+                                type="button"
                                 className="cart-close-btn"
-                                onClick={() => setShowCheckoutModal(false)}
-                            >×</button>
+                                onClick={handleCloseModal}
+                            >
+                                ×
+                            </button>
                         </div>
-
+                        
                         <form onSubmit={handleSubmitOrder}>
-                            <div className="checkout-form-group">
+                            <div className="form-group">
                                 <label>Имя *</label>
                                 <input
                                     type="text"
                                     name="firstName"
-                                    value={checkoutFormData.firstName}
+                                    value={formData.firstName}
                                     onChange={handleInputChange}
                                     required
-                                    className="checkout-form-control"
+                                    className="form-control"
                                     placeholder="Введите ваше имя"
                                 />
                             </div>
-
-                            <div className="checkout-form-group">
-                                <label>Фамилия</label>
-                                <input
-                                    type="text"
-                                    name="lastName"
-                                    value={checkoutFormData.lastName}
-                                    onChange={handleInputChange}
-                                    className="checkout-form-control"
-                                    placeholder="Введите вашу фамилию"
-                                />
-                            </div>
-
-                            <div className="checkout-form-group">
+                            
+                            <div className="form-group">
                                 <label>Телефон *</label>
                                 <input
                                     type="tel"
                                     name="phone"
-                                    value={checkoutFormData.phone}
+                                    value={formData.phone}
                                     onChange={handleInputChange}
                                     required
-                                    className="checkout-form-control"
+                                    className="form-control"
                                     placeholder="+7 (999) 123-45-67"
                                 />
                             </div>
-
-                            <div className="checkout-form-group">
+                            
+                            <div className="form-group">
                                 <label>Email</label>
                                 <input
                                     type="email"
                                     name="email"
-                                    value={checkoutFormData.email}
+                                    value={formData.email}
                                     onChange={handleInputChange}
-                                    className="checkout-form-control"
+                                    className="form-control"
                                     placeholder="your@email.com"
                                 />
                             </div>
-
-                            <div className="checkout-form-group">
+                            
+                            <div className="form-group">
                                 <label>Адрес доставки</label>
                                 <input
                                     type="text"
                                     name="address"
-                                    value={checkoutFormData.address}
+                                    value={formData.address}
                                     onChange={handleInputChange}
-                                    className="checkout-form-control"
+                                    className="form-control"
                                     placeholder="Введите адрес доставки"
                                 />
                             </div>
-
-                            <div className="checkout-form-group">
-                                <label>Комментарий к заказу</label>
-                                <textarea
-                                    name="comment"
-                                    value={checkoutFormData.comment}
-                                    onChange={handleInputChange}
-                                    rows="3"
-                                    className="checkout-form-control"
-                                    placeholder="Дополнительные пожелания..."
-                                />
-                            </div>
-
+                            
                             <button 
                                 type="submit"
-                                className="checkout-submit-btn"
+                                className="checkout-btn"
                             >
                                 Подтвердить заказ
                             </button>
@@ -481,7 +491,6 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
         </>
     );
 }
-
 // Компонент шапки
 function Header({ cartCount, onCartClick }) {
     const [showLoginModal, setShowLoginModal] = useState(false);
@@ -1029,6 +1038,7 @@ function App() {
 // Рендеринг приложения
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
+
 
 
 
