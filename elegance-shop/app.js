@@ -330,6 +330,13 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
         setShowCheckoutModal(true);
     };
 
+    // Исправленная функция для кнопки
+    const handleCheckoutButtonClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleCheckout();
+    };
+
     if (!show) return null;
 
     return (
@@ -380,21 +387,13 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
                             ))}
                             <div className="mt-4 pt-3 border-top">
                                 <h5>Итого: {totalPrice.toLocaleString()} ₽</h5>
-                              <button 
-    className="btn btn-primary w-100 mt-3"
-    onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('Кнопка нажата!');
-        handleCheckout();
-    }}
-    style={{
-        position: 'relative',
-        zIndex: 9999
-    }}
->
-    Оформить заказ
-</button>
+                                {/* ИСПРАВЛЕННАЯ КНОПКА */}
+                                <button 
+                                    className="btn btn-primary w-100 mt-3"
+                                    onClick={handleCheckoutButtonClick}
+                                >
+                                    Оформить заказ
+                                </button>
                             </div>
                         </>
                     )}
@@ -1087,6 +1086,7 @@ function App() {
 // Рендеринг приложения
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
+
 
 
 
