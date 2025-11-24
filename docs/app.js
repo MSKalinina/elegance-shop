@@ -274,7 +274,7 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
 
     const handleOrderSubmit = (e) => {
         e.preventDefault();
-        // Здесь можно добавить логику отправки заказа
+      // Логика 
         console.log('Данные заказа:', orderData);
         console.log('Товары:', cart);
         console.log('Общая сумма:', totalPrice);
@@ -292,7 +292,7 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
             comment: ''
         });
         
-        // Можно добавить уведомление об успешном оформлении
+       
         alert('Заказ успешно оформлен!');
     };
 
@@ -1013,6 +1013,7 @@ function App() {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(<App />);
+
 
 
 
