@@ -667,7 +667,7 @@ XL - 50-52
                     </div>
                 </div>
                 <div className="text-center pt-3 border-top">
-                    <p>&copy; 2025 ELEGANCE. Все права защищены. Данный сайт является учебным процессом и не осуществяет продажи.</p>
+                    <p>&copy; 2025 ELEGANCE. Все права защищены. Данный сайт является учебным проектом и не осуществяет продажи.</p>
                 </div>
             </div>
         </footer>
@@ -862,6 +862,7 @@ function App() {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(<App />);
+
 
 
 
