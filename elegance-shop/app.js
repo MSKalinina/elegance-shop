@@ -276,16 +276,44 @@ function ProductModal({ product, isOpen, onClose, onAddToCart }) {
 // Компонент корзины
 function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }) {
     const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-    const [formData, setFormData] = useState({
-        firstName: '',
-        phone: '',
+    const [orderData, setOrderData] = useState({
+        name: '',
         email: '',
-        address: ''
+        phone: '',
+        address: '',
+        comment: ''
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Валидация формы
+    const validateForm = () => {
+        const { name, email, phone, address } = orderData;
+        if (!name.trim()) {
+            alert('Введите имя');
+            return false;
+        }
+        if (!email.trim() || !email.includes('@')) {
+            alert('Введите корректный email');
+            return false;
+        }
+        if (!phone.trim()) {
+            alert('Введите телефон');
+            return false;
+        }
+        if (!address.trim()) {
+            alert('Введите адрес доставки');
+            return false;
+        }
+        if (cart.length === 0) {
+            alert('Корзина пуста');
+            return false;
+        }
+        return true;
+    };
 
     // Обработчик оформления заказа
-    const handleCheckout = () => {
-        console.log('🛒 Оформление заказа, товаров:', cart.length);
+    const handleCheckoutClick = () => {
+        console.log('🛒 Оформление заказа');
         if (cart.length === 0) {
             alert('Корзина пуста');
             return;
@@ -294,65 +322,83 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
     };
 
     // Обработчик отправки формы
-    const handleSubmitOrder = (e) => {
+    const handleSubmitOrder = async (e) => {
         e.preventDefault();
-        console.log('📦 Отправка заказа:', formData);
-        
-        // Простая валидация
-        if (!formData.firstName.trim() || !formData.phone.trim()) {
-            alert('Пожалуйста, заполните обязательные поля');
+        console.log('📦 Отправка заказа...');
+
+        if (!validateForm()) {
             return;
         }
 
-        // Симуляция успешного заказа
-        alert(`Заказ оформлен! Номер: #${Math.random().toString(36).substr(2, 8).toUpperCase()}`);
-        
-        // Сброс состояния
-        setShowCheckoutModal(false);
-        onHide();
-        setFormData({
-            firstName: '',
-            phone: '',
-            email: '',
-            address: ''
-        });
+        setIsSubmitting(true);
+
+        try {
+            // Создаем объект заказа
+            const order = {
+                customer: orderData,
+                items: cart.map(item => ({
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    size: item.selectedSize
+                })),
+                total: totalPrice,
+                orderNumber: `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 5).toUpperCase()}`
+            };
+
+            console.log('✅ Заказ создан:', order);
+
+            // Имитация отправки на сервер
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Успешное оформление
+            alert(`Заказ успешно оформлен! Номер заказа: ${order.orderNumber}`);
+            
+            // Закрываем модальные окна
+            setShowCheckoutModal(false);
+            onHide();
+            
+            // Очищаем корзину
+            cart.forEach(item => removeFromCart(item.id));
+            
+            // Сбрасываем форму
+            setOrderData({
+                name: '',
+                email: '',
+                phone: '',
+                address: '',
+                comment: ''
+            });
+
+        } catch (error) {
+            console.error('❌ Ошибка оформления заказа:', error);
+            alert('Произошла ошибка при оформлении заказа');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
-    // Обработчик изменений в форме
+    // Обработчик изменения полей формы
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
+        setOrderData(prev => ({
             ...prev,
             [name]: value
         }));
     };
 
-    // Закрытие модального окна
-    const handleCloseModal = () => {
-        setShowCheckoutModal(false);
-    };
-
-    // Если корзина скрыта - не рендерим ничего
     if (!show) return null;
 
     return (
         <>
-            {/* Оверлей корзины */}
+            {/* Корзина */}
             <div className="cart-overlay">
                 <div className="cart-sidebar">
-                    {/* Заголовок корзины */}
                     <div className="cart-header">
                         <h3>Корзина</h3>
-                        <button 
-                            type="button" 
-                            className="cart-close-btn"
-                            onClick={onHide}
-                        >
-                            ×
-                        </button>
+                        <button type="button" className="cart-close-btn" onClick={onHide}>×</button>
                     </div>
 
-                    {/* Тело корзины */}
                     <div className="cart-body">
                         {cart.length === 0 ? (
                             <p>Ваша корзина пуста</p>
@@ -371,41 +417,34 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
                                             type="button"
                                             className="quantity-btn"
                                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                        >
-                                            -
-                                        </button>
+                                        >-</button>
                                         <span>{item.quantity}</span>
                                         <button 
                                             type="button"
                                             className="quantity-btn"
                                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                        >
-                                            +
-                                        </button>
+                                        >+</button>
                                         <button 
                                             type="button"
                                             className="remove-btn"
                                             onClick={() => removeFromCart(item.id)}
-                                        >
-                                            ×
-                                        </button>
+                                        >×</button>
                                     </div>
                                 </div>
                             ))
                         )}
                     </div>
 
-                    {/* Футер корзины */}
                     <div className="cart-footer">
                         <div className="cart-total">
                             <h4>Итого: {totalPrice.toLocaleString()} ₽</h4>
                             <button 
                                 type="button"
                                 className="checkout-btn"
-                                onClick={handleCheckout}
+                                onClick={handleCheckoutClick}
                                 disabled={cart.length === 0}
                             >
-                                Оформить заказ
+                                {cart.length === 0 ? 'Корзина пуста' : 'Оформить заказ'}
                             </button>
                         </div>
                     </div>
@@ -421,7 +460,8 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
                             <button 
                                 type="button"
                                 className="cart-close-btn"
-                                onClick={handleCloseModal}
+                                onClick={() => setShowCheckoutModal(false)}
+                                disabled={isSubmitting}
                             >
                                 ×
                             </button>
@@ -432,12 +472,27 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
                                 <label>Имя *</label>
                                 <input
                                     type="text"
-                                    name="firstName"
-                                    value={formData.firstName}
+                                    name="name"
+                                    value={orderData.name}
                                     onChange={handleInputChange}
                                     required
                                     className="form-control"
                                     placeholder="Введите ваше имя"
+                                    disabled={isSubmitting}
+                                />
+                            </div>
+                            
+                            <div className="form-group">
+                                <label>Email *</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={orderData.email}
+                                    onChange={handleInputChange}
+                                    required
+                                    className="form-control"
+                                    placeholder="your@email.com"
+                                    disabled={isSubmitting}
                                 />
                             </div>
                             
@@ -446,43 +501,61 @@ function Cart({ show, onHide, cart, removeFromCart, updateQuantity, totalPrice }
                                 <input
                                     type="tel"
                                     name="phone"
-                                    value={formData.phone}
+                                    value={orderData.phone}
                                     onChange={handleInputChange}
                                     required
                                     className="form-control"
                                     placeholder="+7 (999) 123-45-67"
+                                    disabled={isSubmitting}
                                 />
                             </div>
                             
                             <div className="form-group">
-                                <label>Email</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    className="form-control"
-                                    placeholder="your@email.com"
-                                />
-                            </div>
-                            
-                            <div className="form-group">
-                                <label>Адрес доставки</label>
+                                <label>Адрес доставки *</label>
                                 <input
                                     type="text"
                                     name="address"
-                                    value={formData.address}
+                                    value={orderData.address}
                                     onChange={handleInputChange}
+                                    required
                                     className="form-control"
                                     placeholder="Введите адрес доставки"
+                                    disabled={isSubmitting}
                                 />
+                            </div>
+                            
+                            <div className="form-group">
+                                <label>Комментарий к заказу</label>
+                                <textarea
+                                    name="comment"
+                                    value={orderData.comment}
+                                    onChange={handleInputChange}
+                                    className="form-control"
+                                    placeholder="Дополнительные пожелания..."
+                                    rows="3"
+                                    disabled={isSubmitting}
+                                />
+                            </div>
+
+                            <div className="order-summary">
+                                <h4>Ваш заказ:</h4>
+                                {cart.map(item => (
+                                    <div key={item.id} className="order-item">
+                                        <span>{item.name} × {item.quantity}</span>
+                                        <span>{(item.price * item.quantity).toLocaleString()} ₽</span>
+                                    </div>
+                                ))}
+                                <div className="order-total">
+                                    <strong>Итого: {totalPrice.toLocaleString()} ₽</strong>
+                                </div>
                             </div>
                             
                             <button 
                                 type="submit"
                                 className="checkout-btn"
+                                disabled={isSubmitting}
                             >
-                                Подтвердить заказ
+                                {isSubmitting ? 'Оформление...' : 'Подтвердить заказ'}
                             </button>
                         </form>
                     </div>
@@ -1038,6 +1111,7 @@ function App() {
 // Рендеринг приложения
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
+
 
 
 
