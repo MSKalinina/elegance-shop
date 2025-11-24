@@ -328,7 +328,7 @@ body {
     animation: fadeIn 0.8s ease-out;
 }
 
-/* ДОБАВЛЕНО: Стили для модального окна товара */
+/*  Стили для модального окна товара */
 .product-modal {
     position: fixed;
     top: 0;
@@ -447,7 +447,7 @@ body {
     flex: 1;
 }
 
-/* ДОБАВЛЕНО: Стили для галереи изображений */
+/* Стили для галереи изображений */
 .product-gallery {
     position: relative;
     height: 100%;
@@ -604,4 +604,5 @@ body {
 
 .size-selector .btn:hover {
     transform: translateY(-2px);
+
 }
